@@ -252,6 +252,7 @@ def decodec(ct):
       print(ct.decode(),end="")
 decodec(ct)
 ```
+>Flag: **KCTF{4_P1_4_D4Y_K33P5_7H3_H4CK3r5_4W4Y}**
 
 ## Encode Mania (186 solves)
 
@@ -358,6 +359,7 @@ while enc[0:4] != "KCTF":
 print(enc)
 ```
 
+>Flag: **KCTF{dfs_0r_b4u7e_f04c3}**
 
 
 
