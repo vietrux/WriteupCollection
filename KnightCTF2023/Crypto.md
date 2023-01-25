@@ -254,9 +254,202 @@ decodec(ct)
 ```
 >Flag: **KCTF{4_P1_4_D4Y_K33P5_7H3_H4CK3r5_4W4Y}**
 
+## Jamal (142 solves)
+
+### Challenge
+```
+My friend Jamal has encrypted the flag and sent me the files. He now wants me to decrypt it and find out. Can you do it for me, please?
+
+Demo Flag: KCTF{f4k3_fl4g}
+```
+
+<details>
+<summary>jamal-encrypt.py</summary>
+
+```python
+from random import randint, seed
+
+
+
+def is_prime(n):
+    if n == 2 or n == 3:
+        return True
+    if n % 2 == 0 or n < 2:
+        return False
+    for i in range(3, int(n**0.5)+1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+
+def get_prime(n):
+    while True:
+        p = randint(2**(n-1), 2**n)
+        if is_prime(p):
+            return p
+
+
+def encrypt(ch, g, p, y, k):
+    pt_int = int.from_bytes(ch.encode(), "big")
+    c1 = pow(g, k, p)
+    c2 = (pt_int * pow(y, k, p)) % p
+
+    return c1, c2
+
+
+def main():
+    
+    flag = open("flag.txt", "r").read().strip()
+    
+    x = randint(2, 9999999)
+    p = get_prime(43)
+    g = get_prime(43)
+
+    while g == p:
+        g = get_prime(43)
+
+    if g > p:
+        g, p = p, g
+
+    y = pow(g, x, p)
+
+    with open("flag.enc", "w") as out:
+        for ch in list(flag):
+            #   encrypt
+            k = randint(2, 9999)
+            c1, c2 = encrypt(ch, g, p, y, k)
+            out.write(f"{c1},{c2}\n")
+
+    with open("key.pub", "w") as out:
+        out.write(f"p: {p}\n")
+
+
+if __name__ == "__main__":
+    seed(0)
+    main()
+
+```
+</details>
+
+<details>
+<summary>jamal-flag.enc.txt</summary>
+
+```
+2542674357061,3229421908786
+1047095110514,2703124715302
+2241080680361,339282920484
+2877082899121,213437588357
+2962454333590,1146622182354
+8667422468,2914668005810
+3283797690288,5668747940970
+92336276716,2578935770315
+280618016374,4820189175032
+1209866491592,146344916624
+2253881281576,2448560213475
+1161992879414,1674301627359
+4818900557459,4874289912091
+1794902833332,3885572444087
+3082175285512,235300300457
+1157352410430,3391910550439
+1975682514838,4412581570619
+940190944451,4668208507929
+4892987552563,3969703431560
+861276404486,4681646838677
+5308919438905,740205209430
+4882067017820,5684832423565
+832490479211,3882413987731
+2768698738377,2559643212287
+4799150729489,2715004149410
+2400910224808,2411154824523
+871309115691,312836731476
+32734373338,5274112237786
+2427518930772,3618374377486
+3075900055786,2047586052701
+5395051057487,427396164824
+663270611761,2916443609523
+```
+</details>
+
+<details>
+<summary>jamal-key.pub</summary>
+```
+p: 5690411473163
+```
+
+</details>
+
+The key of this challenge is seed() function. You can see some randint() function but it is not important. If you use seed(), every time you run this program, it alway return a same result.
+jamal-key.pub is a clue for you.
+
+Ok, now i just have to brute-force 128 charactor until the result of c1,c2 is same as jamal-flag.enc.txt
+
+```python
+from random import randint, seed
+
+
+def is_prime(n):
+    if n == 2 or n == 3:
+        return True
+    if n % 2 == 0 or n < 2:
+        return False
+    for i in range(3, int(n**0.5)+1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+
+def get_prime(n):
+    while True:
+        p = randint(2**(n-1), 2**n)
+        if is_prime(p):
+            return p
+
+
+def encrypt(ch, g, p, y, k):
+    pt_int = int.from_bytes(ch.encode(), "big")
+    c1 = pow(g, k, p)
+    c2 = (pt_int * pow(y, k, p)) % p
+
+    return c1, c2
+
+
+def main():
+    
+    x = randint(2, 9999999) 
+    p = get_prime(43)
+    g = get_prime(43)
+
+    while g == p:
+        g = get_prime(43)
+
+    if g > p:
+        g, p = p, g
+    
+    #g < p 
+
+    y = pow(g, x, p)
+
+
+    with open("jamal-flag.enc.txt", "r") as out:
+          for _ in out.readlines():
+            k = randint(2, 9999)
+            for __ in range(128):
+              c1, c2 = encrypt(chr(__), g, p, y, k)
+              if c1 == int(_.split(",")[0]) and c2 == int(_.split(",")[1]):
+                print(chr(__), end="")
+                break
+
+
+if __name__ == "__main__":
+    seed(0)
+    main()
+```
+
+>Flag: **KCTF{h4v3_y0u_h34rd_0f_3l64m4l?}**
+
 ## Encode Mania (186 solves)
 
-Challenge
+### Challenge
 ```
 Encoding random stuffs is so cool! I just want to encode it over and over and over again ...
 
