@@ -223,13 +223,13 @@ def splitct(ct):
         _.remove(__)
     ctt.append(_)
 
-  for i in ctt:
-    for j in i:
-      if j != i[-1]:
-        j += "="
+  for _ in ctt:
+    for __ in _:
+      if __ != _[-1]:
+        __ += "="
       else:
-        j += "=="
-      result.append(j)
+        __ += "=="
+      result.append(__)
         
   return result
 # print(split(ct))
