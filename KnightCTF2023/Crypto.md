@@ -132,7 +132,7 @@ To solve it, i use brute-force and find out the random number. It's 563
 
 ```python
 import codecs
-filename = "/home/fishe/Space/playground/vaulter-output.enc.txt"
+filename = "vaulter-output.enc.txt"
 byte_data = []
 num = 563
 print("Trying " + str(num) + ":\n")
