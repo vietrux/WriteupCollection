@@ -41,7 +41,7 @@ if __name__ == "__main__":
 ```
 </details>
 
-I see that they read every charactor and xor it with 0x66
+I see that they read every character and xor it with 0x66
 
 It's very easy to decode by xor again with 0x66
 ```python
@@ -124,9 +124,9 @@ if __name__ == "__main__":
 </details>
 
 
-You can see that they read content from flag file and convert it into hex. After that, it convert each charactor to the number representing the unicode code of a specified character :)))) and xor it with an random integer in range(0,1024)
+You can see that they read content from flag file and convert it into hex. After that, it convert each character to the number representing the unicode code of a specified character :)))) and xor it with an random integer in range(0,1024)
 
-Finally, they convert it back to charactor and create output.
+Finally, they convert it back to character and create output.
 
 To solve it, i use brute-force and find out the random number. It's 563
 
@@ -381,7 +381,7 @@ p: 5690411473163
 The key of this challenge is seed() function. You can see some randint() function but it is not important. If you use seed(), every time you run this program, it alway return a same result.
 jamal-key.pub is a clue for you.
 
-Ok, now i just have to brute-force 128 charactor until the result of c1,c2 is same as jamal-flag.enc.txt
+Ok, now i just have to brute-force 128 character until the result of c1,c2 is same as jamal-flag.enc.txt
 
 ```python
 from random import randint, seed
