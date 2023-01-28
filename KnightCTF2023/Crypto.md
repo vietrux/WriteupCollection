@@ -131,25 +131,28 @@ Finally, they convert it back to character and create output.
 To solve it, i use brute-force and find out the random number. It's 563
 
 ```python
-import codecs
-filename = "vaulter-output.enc.txt"
-byte_data = []
-num = 563
-print("Trying " + str(num) + ":\n")
-decode = ""
-f = open(filename, 'r')
-res = []
-while 1:
-    # read by character
-    char = f.read(1)		
-    if not char:
-        break
-    res.append(chr(ord(char) ^ num))
-hexstring = "".join(i for i in res)
+import sys
+import random
 
-#if decode.find("{") > 0:
-print(hexstring)
-f.close()
+def main(num):
+
+  byte_data = []
+
+  with open("xor.txt", "r") as f:
+    byte_data = f.read()        
+    out = []
+    for each in list(byte_data):
+      out.append(chr(ord(each) ^ num))
+    concat = "".join(out)
+    try:
+      ___ = bytes.fromhex(concat)
+      print(f"Found: {concat}")
+    except:
+      pass
+
+if __name__ == "__main__":
+  for _ in range(0,1024):
+    main(_)
 ```
 
 after got hexstring, i convert it to binary file and using `file` command to check it, and i found it is Microsoft Word 2007 file :)))

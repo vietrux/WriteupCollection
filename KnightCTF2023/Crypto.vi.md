@@ -126,25 +126,28 @@ Trong bài này, người ta đã đưa toàn bộ nội dung của file gốc s
 Mình đã thử giải mã bằng cách vét cạn các con số từ 0 -> 1023 và trong số đó có duy nhất 1 kết quả khả quan nhất. Đó là 563. 
 
 ```python
-import codecs
-filename = "vaulter-output.enc.txt"
-byte_data = []
-num = 563
-print("Trying " + str(num) + ":\n")
-decode = ""
-f = open(filename, 'r')
-res = []
-while 1:
-    # read by character
-    char = f.read(1)		
-    if not char:
-        break
-    res.append(chr(ord(char) ^ num))
-hexstring = "".join(i for i in res)
+import sys
+import random
 
-#if decode.find("{") > 0:
-print(hexstring)
-f.close()
+def main(num):
+
+  byte_data = []
+
+  with open("xor.txt", "r") as f:
+    byte_data = f.read()        
+    out = []
+    for each in list(byte_data):
+      out.append(chr(ord(each) ^ num))
+    concat = "".join(out)
+    try:
+      ___ = bytes.fromhex(concat)
+      print(f"Found: {concat}")
+    except:
+      pass
+
+if __name__ == "__main__":
+  for _ in range(0,1024):
+    main(_)
 ```
 Sau khi có được ouput, mình convert nó sang binary file.
 Tiếp theo mình sử dụng lênh `file` để kiểm tra và phát hiện rằng đây là 1 file Word. Vậy là rõ rồi, chúng ta hãy dùng Word để mở file đó lên và xem thôi.
